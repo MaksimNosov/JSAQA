@@ -7,18 +7,13 @@ const {
   checkPlaceAndRowOnTicket,
   checkTicket,
   checkPlaceIsFree,
-	checkPlaceIsNotFree
+  checkPlaceIsNotFree,
 } = require("./lib/commands.js");
 
-const dayTomorrowSelector = "body > nav > a:nth-child(2)"; // выбираем день (создаем селектор завтра)
-const dayAfterTomorrowSelector = "body > nav > a:nth-child(3)"; // выбираем день (создаем селектор послезавтра)
-const timeOfSecondFilmSelrctor =
-  "section:nth-child(2) > div.movie-seances__hall > ul > li"; //создаем селектор времени второго фильма
-const rowNumber = 3; //задаем ряд первого билета
-const placeNumber = 1; //задаем место первого билета
-const rowNumber2 = 3; //задаем ряд второго билета
-const placeNumber2 = 2; //задаем место второго билета
-const invalidPlaceNumber = 1000;
+const rowNumber = 10; //задаем ряд первого билета
+const placeNumber = 7; //задаем место первого билета
+const rowNumber2 = 10; //задаем ряд второго билета
+const placeNumber2 = 8; //задаем место второго билета
 const rowNumberSelector =
   "section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(" +
   rowNumber +
@@ -39,14 +34,6 @@ const placeNumberSelector2 =
   ") > span:nth-child(" +
   placeNumber2 +
   ")"; //создаем селектор номера места в ряду второго билета
-const invalidPlaceNumberSelector =
-  "section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(" +
-  rowNumber +
-  ") > span:nth-child(" +
-  invalidPlaceNumber +
-  ")"; //создаем селектор номера места в ряду второго билета
-const bookButtonSelector = "button.acceptin-button"; //создаем селектор кнопки забронироавть
-const successMsg = "Электронный билет";
 
 beforeEach(async () => {
   page = await browser.newPage();
@@ -64,22 +51,33 @@ describe("Going to the cinema", () => {
     }); //открываем страницу кинотеатра
   });
 
-  test("Booking one place", async () => {
-    await clickElement(page, dayAfterTomorrowSelector); //выбираем день
-    await clickElement(page, timeOfSecondFilmSelrctor); //выбираем фильм
+  test("Booking one seat", async () => {
+    await clickElement(page, "body > nav > a:nth-child(3)"); //выбираем день
+    await clickElement(
+      page,
+      "section:nth-child(2) > div.movie-seances__hall > ul > li"
+    ); //выбираем фильм
     await checkRow(page, rowNumber, rowNumberSelector); //проверяем существование ряда
     await checkPlace(page, rowNumber, placeNumber, placeNumberSelector); //проверяем существование места в ряду
     await clickElement(page, placeNumberSelector); //кликаем по месту
-    await checkBookButton(page, bookButtonSelector, rowNumber, placeNumber); //проверяем, что кнопка Забронировать активна
+    await checkBookButton(
+      page,
+      "button.acceptin-button",
+      rowNumber,
+      placeNumber
+    ); //проверяем, что кнопка Забронировать активна
     await clickElement(page, "button.acceptin-button"); // нажимаем кнопку Забронировать
     await checkPlaceAndRowOnTicket(page, rowNumber, placeNumber); // сверяем выбранные ряд/место в билете
     await clickElement(page, "button.acceptin-button"); // нажимаем кнопку Получить код бронирования
-    await checkTicket(page, successMsg); //проверяем получение билета
+    await checkTicket(page, "Электронный билет"); //проверяем получение билета
   }, 45000);
 
-  test("Reservation two place", async () => {
-    await clickElement(page, dayTomorrowSelector); //выбираем день
-    await clickElement(page, timeOfSecondFilmSelrctor); //выбираем фильм
+  test("Reservation two seat", async () => {
+    await clickElement(page, "body > nav > a:nth-child(2)"); //выбираем день
+    await clickElement(
+      page,
+      "section:nth-child(2) > div.movie-seances__hall > ul > li"
+    ); //выбираем фильм
     await checkRow(page, rowNumber, rowNumberSelector); //проверяем существование ряда первого билета
     await checkPlace(page, rowNumber, placeNumber, placeNumberSelector); //проверяем существование места в ряду первого билета
     await checkRow(page, rowNumber2, rowNumberSelector2); //проверяем существование ряда второго билета
@@ -93,18 +91,31 @@ describe("Going to the cinema", () => {
     ); //проверяем, что место второго билета свободно
     await clickElement(page, placeNumberSelector); //кликаем по месту первого билета
     await clickElement(page, placeNumberSelector2); //кликаем по месту второго билета
-    await checkBookButton(page, bookButtonSelector, rowNumber, placeNumber); //проверяем, что кнопка Забронировать активна
+    await checkBookButton(
+      page,
+      "button.acceptin-button",
+      rowNumber,
+      placeNumber
+    ); //проверяем, что кнопка Забронировать активна
     await clickElement(page, "button.acceptin-button"); // нажимаем кнопку Забронировать
     await checkPlaceAndRowOnTicket(page, rowNumber, placeNumber); // сверяем выбранные ряд/место в билете
     await clickElement(page, "button.acceptin-button"); // нажимаем кнопку Получить код бронирования
-    await checkTicket(page, successMsg); //проверяем получение билета
+    await checkTicket(page, "Электронный билет"); //проверяем получение билета
   }, 45000);
 
-  test("Can't buy a ticket with a non-existent place", async () => {
-    await clickElement(page, dayAfterTomorrowSelector); //выбираем день
-    await clickElement(page, timeOfSecondFilmSelrctor); //выбираем фильм
+  test("Can't buy a ticket with a taken seat", async () => {
+    await clickElement(page, "body > nav > a:nth-child(3)"); //выбираем день
+    await clickElement(
+      page,
+      "section:nth-child(2) > div.movie-seances__hall > ul > li"
+    ); //выбираем фильм
     await checkRow(page, rowNumber, rowNumberSelector); //проверяем существование ряда
     await checkPlace(page, rowNumber, placeNumber, placeNumberSelector); //проверяем существование места в ряду
-		await checkPlaceIsNotFree( page, rowNumber, placeNumber, placeNumberSelector); //проверяем, что место занято
+    await checkPlaceIsNotFree(
+      page,
+      rowNumber,
+      placeNumber,
+      placeNumberSelector
+    ); //проверяем, что место занято
   }, 45000);
 });

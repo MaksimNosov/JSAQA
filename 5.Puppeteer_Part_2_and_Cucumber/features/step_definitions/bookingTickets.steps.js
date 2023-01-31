@@ -56,10 +56,39 @@ When("user click button", async function () {
   await clickElement(this.page, "button.acceptin-button");
 });
 
+When(
+  "user select row2 {int} and seat2 {int}",
+  async function (rowNumber2, placeNumber2) {
+    const placeNumberSelector =
+      "section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(" +
+      rowNumber2 +
+      ") > span:nth-child(" +
+      placeNumber2 +
+      ")";
+    await clickElement(this.page, placeNumberSelector);
+  }
+);
+
+When("user select the booked place", async function () {
+  await clickElement(
+    this.page,
+    "span.buying-scheme__chair.buying-scheme__chair_standart.buying-scheme__chair_taken"
+  );
+});
+
 Then("user see {string}", async function (successMsg) {
   const ticket = await this.page.$eval(
     "body > main > section > header > h2",
     (el) => el.textContent
   );
   expect(ticket).equal(successMsg);
+});
+
+Then("user see button disabled {string}", async function (isDisable) {
+  const actual = String(
+    await this.page.$eval("button", (button) => {
+      return button.disabled;
+    })
+  );
+  expect(actual).contains(isDisable);
 });
