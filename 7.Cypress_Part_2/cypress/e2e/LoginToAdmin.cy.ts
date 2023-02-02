@@ -7,13 +7,10 @@ beforeEach(() => {
 });
 
 it("Login with correct credentials", () => {
-	cy.login(user.validEmail, user.validPassword);
-	cy.get(selectors.stepInAdmin)
+  cy.login(user.validEmail, user.validPassword);
+  cy.get(selectors.stepInAdmin)
     .then((elements) => elements[0].validationMessage)
-    .should(
-      "contain",
-      msg.stepOneInAdmin
-    );
+    .should("contain", msg.stepOneInAdmin);
 });
 
 it("Shows error in case of invalid login", () => {

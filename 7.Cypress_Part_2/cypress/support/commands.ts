@@ -36,9 +36,8 @@
 //   }
 // }
 
-
 Cypress.Commands.add("login", (email, password) => {
-	const selectors = require("../fixtures/selectors");
+  const selectors = require("../fixtures/selectors");
 
   if (email) {
     cy.get(selectors.email).type(email);
@@ -50,9 +49,3 @@ Cypress.Commands.add("login", (email, password) => {
 
   cy.get(selectors.loginButton).click();
 });
-
-Cypress.Commands.add("getFilmName", () => {
-  return cy.get(".conf-step__movie-title").then((elements) => elements[0].should("have.text"));
-});
-
-

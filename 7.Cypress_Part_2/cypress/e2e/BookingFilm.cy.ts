@@ -1,6 +1,7 @@
 const user = require("../fixtures/users");
 const selectors = require("../fixtures/selectors");
 const msg = require("../fixtures/msg");
+const seats = require("../fixtures/seats");
 
 beforeEach(() => {
   cy.visit("/");
@@ -12,21 +13,22 @@ it("Booking film", () => {
   cy.get(selectors.stepInAdmin)
     .then((elements) => elements[0].validationMessage)
     .should("contain", msg.stepOneInAdmin);
-
-  cy.get(
-    "#grid-session > div > div.conf-step__movies > div:nth-child(1) > h3"
-  ).then(($film) => {
+  cy.get(selectors.activeFilmInAdmin).then(($film) => {
     const filmName = $film.text();
     cy.visit("/");
-		cy.get("body > nav > a:nth-child(5)").click();
-		cy.get(
-      "body > main > section:nth-child(1) > div.movie-seances__hall > ul > li:nth-child(3) > a"
-    ).should(filmName);
+    cy.get(selectors.day).click();
+    cy.get(selectors.movie)
+      .contains(filmName)
+      .get(selectors.filmSession)
+      .click();
+    cy.get(
+      `body > main > section > div.buying-scheme > div.buying-scheme__wrapper > div:nth-child(${seats.row}) > span:nth-child(${seats.seat})`
+    ).click();
+    cy.get(selectors.acceptinButton).click();
+    cy.contains(msg.checkTicket).should("be.visible");
+    cy.get(selectors.acceptinButton).click();
+    cy.get(selectors.checkTitle)
+      .contains(msg.bookingSuccess)
+      .should("be.visible");
   });
-
-  // const filmName = cy.get(".conf-step__movie-title");
-
-  // cy.visit("/");
-  // console.log(filmName);
-  // cy.contains(filmName.text()).click();
 });

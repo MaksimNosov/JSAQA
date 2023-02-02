@@ -1,6 +1,7 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+  projectId: "ey6z32",
   e2e: {
     baseUrl: "http://qamid.tmweb.ru/",
     viewportWidth: 1080,

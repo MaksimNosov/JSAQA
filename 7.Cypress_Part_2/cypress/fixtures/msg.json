@@ -1,5 +1,7 @@
 {
   "authorisationError": "Ошибка авторизации!",
   "emptyField": "Заполните это поле.",
-	"stepOneInAdmin": "Управление залами"
+  "stepOneInAdmin": "Управление залами",
+  "checkTicket": "Вы выбрали билеты:",
+  "bookingSuccess": "Электронный билет"
 }
