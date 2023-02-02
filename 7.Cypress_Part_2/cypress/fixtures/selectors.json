@@ -1,0 +1,8 @@
+{
+	"email": "[type=email]",
+	"password": "[type=password]",
+	"title": ".page-header__title",
+	"loginButton": ".login__button",
+	"week": ".page-nav__day",
+	"stepInAdmin": ".conf-step__title"
+}
