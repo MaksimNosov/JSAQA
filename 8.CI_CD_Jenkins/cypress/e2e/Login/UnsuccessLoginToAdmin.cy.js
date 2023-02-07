@@ -1,16 +1,9 @@
-const user = require("../fixtures/users");
-const selectors = require("../fixtures/selectors");
-const msg = require("../fixtures/msg");
+const user = require("../../fixtures/users");
+const selectors = require("../../fixtures/selectors");
+const msg = require("../../fixtures/msg");
 
 beforeEach(() => {
   cy.visit("/admin/");
-});
-
-it("Login with correct credentials", () => {
-  cy.login(user.validEmail, user.validPassword);
-  cy.get(selectors.stepInAdmin)
-    .then((elements) => elements[0].validationMessage)
-    .should("contain", msg.stepOneInAdmin);
 });
 
 it("Shows error in case of invalid login", () => {

@@ -1,5 +1,4 @@
-const user = require("../fixtures/users");
-const selectors = require("../fixtures/selectors");
+const selectors = require("../../fixtures/selectors");
 
 beforeEach(() => {
   cy.visit("/");
