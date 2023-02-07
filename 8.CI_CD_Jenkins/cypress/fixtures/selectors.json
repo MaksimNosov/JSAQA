@@ -1,0 +1,14 @@
+{
+  "email": "[type=email]",
+  "password": "[type=password]",
+  "title": ".page-header__title",
+  "loginButton": ".login__button",
+  "week": ".page-nav__day",
+  "stepInAdmin": ".conf-step__title",
+  "acceptinButton": ".acceptin-button",
+  "activeFilmInAdmin": "#grid-session > div > div.conf-step__movies > div:nth-child(1) > h3",
+  "day": "body > nav > a:nth-child(5)",
+  "movie": ".movie",
+  "filmSession": "body > main > section:nth-child(1) > div.movie-seances__hall > ul > li:nth-child(1) > a",
+  "checkTitle": ".ticket__check-title"
+}
