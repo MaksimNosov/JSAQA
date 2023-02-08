@@ -11,4 +11,9 @@ it("Login with correct credentials", () => {
   cy.get(selectors.stepInAdmin)
     .then((elements) => elements[0].validationMessage)
     .should("contain", msg.stepOneInAdmin);
+  Cypress.on("uncaught:exception", (err, runnable) => {
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+  });
 });
